@@ -21,6 +21,6 @@ public class ComprarPassagem {
     }
 
     public String getPassagem(){
-        return "    PASSAGEM" + voo.getPlaneInfo() + "  " +passageiro.getDadosPassageiro();
+        return "    PASSAGEM" + voo.getPlaneInfo() + "  " +passageiro.getDadosPassageiro()+"\n\n";
     }
 }

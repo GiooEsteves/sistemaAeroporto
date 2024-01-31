@@ -41,6 +41,6 @@ public class Voo {
     }
 
     public String getPlaneInfo(){
-        return "\nAeroporto Guararapes" + "\nData: " + data + "\nHorário: " + horario + "\nOrigem: " +origem+ "   Destino: " +destino;
+        return "\nAeroporto Guararapes" + "\nData: " + data + "\nHorário: " + horario + "\nOrigem: " +origem+ "   Destino: " +destino+"\n\n";
     }
 }

@@ -20,6 +20,6 @@ public class Funcionario {
     }
 
     public String getDadosFuncionarios(){
-        return "Nome: " + nome + "\nCPF: " + CPF + "\nSalário: " + salario;
+        return "Nome: " + nome + "\nCPF: " + CPF + "\nSalário: " + salario + "\n\n";
     }
 }

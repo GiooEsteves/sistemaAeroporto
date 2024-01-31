@@ -20,6 +20,6 @@ public class Aviao {
     }
 
     public String getDadosAviao(){
-        return "Nome: " + nome + "\nCapacidade: " + capacidade + "\nTipo de avião: " + tipo;
+        return "Nome: " + nome + "\nCapacidade: " + capacidade + "\nTipo de avião: " + tipo+"\n\n";
     }
 }
