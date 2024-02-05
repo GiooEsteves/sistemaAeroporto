@@ -1,5 +1,17 @@
 package ui;
 
+//                                  MUDANÇAS
+
+// 0. MANDAR O DIAGRAMA DE CLASSES NO CLASSROOM (DA PAREDE DO QUARTO)
+// 1. CONSERTAR A FUNÇÃO DE EXCLUIR LINHA DE ARQUIVO
+// 2. VOLTAR A SALVAR COMO OBJETO E TENTAR PUXAR ELE PARA PRINTAR OS DADOS DE DENTRO
+//    E SUBIR ELES EM UM ARRAY PARA CONTINUAR USANDO OS ARRAYS
+// 2. OU FAZER UMA FUNÇÃO DE COMPARAR LINHAS DO ARQUIVO
+//    CRIAR UM METODO PARA ADICIONAR NO ARRAYLIST E PUXAR PELO CONSTRUTOR
+// 3. DIVIDIR O MAIN EM PEDAÇOS (PASTAS CADASTRO E LISTA)
+// 4. COLOCAR TRATAMENTO DE ERRO NO CÓDIGO (USO DE EXCESSÃO)
+//
+
 import java.util.Scanner;
 import java.util.ArrayList;
 import business.*;
@@ -178,16 +190,18 @@ public class App{
                     System.out.print("Digite qual o arquivo: ");
                     String opArq = scanner.next();
 
-                    System.out.print("Deseja apagar todos os dados? [sim/nao]: ");
+                    System.out.print("Deseja apagar todos os dados? [s/n]: ");
                     String resp = scanner.next();
-                    
-                    if(resp == "sim"){
-                        BancoDeDados.eliminarTodoConteudoDeArquivo(opArq+".txt");
-                        System.out.println(opArq+".txt");
-                    }else if(resp == "nao"){
-                        
+                    switch(resp){
+                        case "s":
+                            BancoDeDados.eliminarTodoConteudoDeArquivo(opArq);
+                            break;
+                        case "n":
+                            
+                            break;
+                        default:
+                            break;
                     }
-                    break;
                 case 10:
                     System.out.println("\nSaindo...");
                     loop = false;

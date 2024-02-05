@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+//import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,8 +20,8 @@ public class BancoDeDados{
         }
     }
 
-    public static void eliminarTodoConteudoDeArquivo(String nomeArquivo){           // NÃO ESTÁ DELETANDO
-        try(FileOutputStream fos = new FileOutputStream(nomeArquivo, false)){
+    public static void eliminarTodoConteudoDeArquivo(String nomeArquivo){           
+        try(FileOutputStream fos = new FileOutputStream(nomeArquivo+".txt", false)){
             fos.write(new byte[0]); // Escreve um array de bytes vazio.
             System.out.println("Conteúdo do arquivo " + nomeArquivo + " eliminado com sucesso.");
         }catch(IOException e){
@@ -28,13 +29,13 @@ public class BancoDeDados{
         }
     }
 
-    public static void eliminarDadosDeArquivo(String nomeArquivo, String dadosParaApagar){     // NÃO ESTÁ DELETANDO
-        try(FileInputStream fis = new FileInputStream(nomeArquivo)){
+    public static void eliminarDadosDeArquivo(String nomeArquivo, String dadosParaApagar){     // NÃO ESTÁ FUNCIONANDO
+        try(FileInputStream fis = new FileInputStream(nomeArquivo+".txt")){
 
             byte[] buffer = new byte[1024];
             int bytesRead;
 
-            while ((bytesRead = fis.read(buffer)) != -1) {
+            while((bytesRead = fis.read(buffer)) != -1){
                 String chunk = new String(buffer, 0, bytesRead);
 
                 // Remove os dados que você deseja apagar
@@ -58,4 +59,23 @@ public class BancoDeDados{
             System.err.println("Erro ao ler os dados do arquivo: " + e.getMessage());
         }
     }
+
+    /*public static String compararDadosDeArquivo(String nomeArquivo, String entradaComparacao){        // NÃO ESTÁ FUNCIONANDO
+        try(BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))){
+            String linha;
+            boolean encontrado = false;
+
+            while((linha = reader.readLine()) != null){
+                System.out.println("Linha do arquivo " + linha);
+
+                if(linha.equals(entradaComparacao)){
+                    encontrado = true;
+                    
+                    return ;
+                }
+            }
+        }catch(IOException e){
+            System.err.println("Erro ao ler dados do arquivo " + e.getMessage());
+        }
+    }*/
 }
