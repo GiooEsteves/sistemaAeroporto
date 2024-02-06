@@ -1,6 +1,4 @@
-package business;
-
-import data.Aviao;
+package src;
 
 public class Voo {
     Aviao aviao;
@@ -8,7 +6,7 @@ public class Voo {
     String data;
     String origem;
     String destino;
-    double valorUnitario;
+    public double valorUnitario;
     int aBordo;
 
     public Voo(Aviao aviao, String horario, String data, String origem, String destino, double valorUnitario){

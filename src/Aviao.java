@@ -1,4 +1,4 @@
-package data;
+package src;
 
 public class Aviao {
     String nome;

@@ -1,4 +1,4 @@
-package data;
+package src.funcionarios;
 
 public class AgenteDeBordo extends Funcionario{
     public AgenteDeBordo(String nome, String CPF, Double salario){

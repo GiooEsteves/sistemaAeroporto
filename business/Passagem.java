@@ -1,12 +1,13 @@
 package business;
 
-import data.Passageiro;
+import src.Passageiro;
+import src.Voo;
 
-public class ComprarPassagem {
+public class Passagem{
     Voo voo;
     Passageiro passageiro;
     
-    public ComprarPassagem(Voo v){
+    public Passagem(Voo v){
         this.voo = v;
     }
 
@@ -22,5 +23,9 @@ public class ComprarPassagem {
 
     public String getPassagem(){
         return "    PASSAGEM" + voo.getPlaneInfo() + "  " +passageiro.getDadosPassageiro()+"\n\n";
+    }
+
+    public void getPassageirosDoVoo(){
+        
     }
 }

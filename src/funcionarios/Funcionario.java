@@ -1,4 +1,4 @@
-package data;
+package src.funcionarios;
 
 public class Funcionario {
     String nome;
@@ -22,4 +22,9 @@ public class Funcionario {
     public String getDadosFuncionarios(){
         return "Nome: " + nome + "\nCPF: " + CPF + "\nSalário: " + salario + "\n\n";
     }
+
+    public void inserirFuncionario(){
+        
+    }
+
 }

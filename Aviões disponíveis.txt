@@ -1,8 +1,0 @@
-Nome: Airbus-A1
-Capacidade: 70
-Tipo de avião: bi-motor
-
-Nome: Boeing-737
-Capacidade: 120
-Tipo de avião: supersonico
-

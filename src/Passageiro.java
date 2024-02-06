@@ -1,4 +1,4 @@
-package data;
+package src;
 
 public class Passageiro {
     String nome;

@@ -1,31 +1,37 @@
 package ui;
 
 //                                  MUDANÇAS
-
-// 0. MANDAR O DIAGRAMA DE CLASSES NO CLASSROOM (DA PAREDE DO QUARTO)
-// 1. CONSERTAR A FUNÇÃO DE EXCLUIR LINHA DE ARQUIVO
-// 2. VOLTAR A SALVAR COMO OBJETO E TENTAR PUXAR ELE PARA PRINTAR OS DADOS DE DENTRO
-//    E SUBIR ELES EM UM ARRAY PARA CONTINUAR USANDO OS ARRAYS
-// 2. OU FAZER UMA FUNÇÃO DE COMPARAR LINHAS DO ARQUIVO
-//    CRIAR UM METODO PARA ADICIONAR NO ARRAYLIST E PUXAR PELO CONSTRUTOR
-// 3. DIVIDIR O MAIN EM PEDAÇOS (PASTAS CADASTRO E LISTA)
+// 
+// 2. CRIAR UM METODO PARA ADICIONAR NO ARRAYLIST E PUXAR PELO CONSTRUTOR
+// 3. COMPARTIMENTALIZAR (PASTAS CADASTRO E LISTA)
 // 4. COLOCAR TRATAMENTO DE ERRO NO CÓDIGO (USO DE EXCESSÃO)
 //
 
 import java.util.Scanner;
 import java.util.ArrayList;
-import business.*;
-import data.*;
+
+import business.Passagem;
+
+import src.Aviao;
+import src.Passageiro;
+import src.Voo;
+import src.funcionarios.AgenteDeBordo;
+import src.funcionarios.Funcionario;
+import src.funcionarios.Piloto;
+import src.funcionarios.Vendedor;
 
 public class App{
-    public static void main(String[] args) {
+    public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);
 
-        ArrayList <Aviao> avioesDisponiveis = new ArrayList<Aviao>();                   // Quando o BD estiver funcionando, eliminar
+        ArrayList <Aviao> avioes = new ArrayList<Aviao>();
+        ArrayList <Aviao> avioesDisponiveis = new ArrayList<Aviao>();
+        ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();  
+        ArrayList <Passageiro> passageiros = new ArrayList<Passageiro>();                 
         ArrayList <Voo> voos = new ArrayList<Voo>();
 
         boolean loop = true;
-        while (loop){
+        while(loop){
             System.out.println(" \n-- Aeroporto --");
             System.out.println("1. Cadastro de funcionário");
             System.out.println("2. Cadastro de aviões");
@@ -35,7 +41,6 @@ public class App{
             System.out.println("6. Lista de voos");
             System.out.println("7. Lista de passageiros");
             System.out.println("8. Compra de passagem"); 
-            System.out.println("9. Eliminar dados");  
             System.out.println("10. Sair"); 
             System.out.print("\nDigite a sua opção: ");
             
@@ -63,13 +68,13 @@ public class App{
                         System.out.print("Qual o tipo do piloto? ");
                         String tipo = scanner.next();
                         piloto.setTipoPiloto(tipo);
-                        BancoDeDados.dadosEmArquivos("Funcionarios.txt", piloto.getDadosFuncionarios());
+                        funcionarios.add(piloto);
                     }else if(func == 2){
                         AgenteDeBordo ag = new AgenteDeBordo(n,c,s);
-                        BancoDeDados.dadosEmArquivos("Funcionarios.txt", ag.getDadosFuncionarios());
+                        funcionarios.add(ag);
                     }else if(func == 3){
                         Vendedor vendedor = new Vendedor(n,c,s);
-                        BancoDeDados.dadosEmArquivos("Funcionarios.txt", vendedor.getDadosFuncionarios());
+                        funcionarios.add(vendedor);
                     }
                     System.out.println("\nFuncionário cadastrado!");
                     break;
@@ -83,10 +88,8 @@ public class App{
                     String ti = scanner.next();
 
                     Aviao aviao = new Aviao(no, cap, ti);
-                    BancoDeDados.dadosEmArquivos("Aviões.txt", aviao.getDadosAviao());
-
+                    avioes.add(aviao);
                     avioesDisponiveis.add(aviao);
-                    BancoDeDados.dadosEmArquivos("Aviões disponíveis.txt", aviao.getDadosAviao());
                     System.out.println("\nAvião cadastrado!");
                     break;
                 case 3:
@@ -106,30 +109,35 @@ public class App{
                     System.out.print("Digite o nome do avião escolhido: ");
                     String aviaoNome = scanner.next();
 
-                    for(Aviao a : avioesDisponiveis){               // ALTERAR PARA O BD
+                    for(Aviao a : avioesDisponiveis){
                         if(a.getNome().equals(aviaoNome)){
                             Voo voo = new Voo(a, h, dtaPartida, cidOrigem, cidDestino, valorU);      
                             voos.add(voo);
-                            System.out.println("Voo criado ");
-                            BancoDeDados.dadosEmArquivos("Registro de voos.txt", voo.getPlaneInfo());
-                            BancoDeDados.eliminarDadosDeArquivo("Aviões disponíveis", a.getDadosAviao());   
+                            System.out.println("Voo criado "); 
                         }
                     }
                     break;
                 case 4:
                     System.out.println("\n-- Lista de Funcionários --");
-                    BancoDeDados.lerDadosDeArquivo("Funcionarios.txt");
+                    for(Funcionario f : funcionarios){
+                        System.out.println(f.getDadosFuncionarios() + "\n");
+                    }
                 break;
                 case 5:
                     System.out.println("\n-- Lista de aviões --");
-                    BancoDeDados.lerDadosDeArquivo("Aviões.txt");
+                    for(Aviao a : avioes){
+                        System.out.println(a.getDadosAviao() + "\n");
+                    }
                     break;
                 case 6:
                     System.out.println("\n-- Lista de voos --");
-                    BancoDeDados.lerDadosDeArquivo("Registro de voos.txt");
+                    for(Voo v : voos){
+                        System.out.println(v.getPlaneInfo() + "\n");
+                    }
                     break;
                 case 7:
-                    System.out.println("");
+                    System.out.println("\n-- Lista de passageiros --");
+                    
                     break;
                 case 8:
                     System.out.println("\n-- Compra de passagem --");
@@ -143,12 +151,12 @@ public class App{
                     System.out.print("\nQuantos passageiros? ");
                     int numPassageiro = scanner.nextInt();
 
-                    for(Voo v : voos){          // ALTERAR PARA O BD
+                    for(Voo v : voos){
                         if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v._getCapacidade() >= (v.getABordo() + numPassageiro)){
                             System.out.println("\nVoo encontrado: ");
                             System.out.println(v.getPlaneInfo());
                             System.out.println("\nVoo selecionado!\n");
-                            ComprarPassagem passagem = new ComprarPassagem(v);
+                            Passagem passagem = new Passagem(v);
                             passagem.getPagamento(numPassageiro);
 
                             //if(pagamento = "aprovado"){ 
@@ -163,10 +171,9 @@ public class App{
                                 String cpfPassageiro = scanner.next();
         
                                 Passageiro passageiro = new Passageiro(nomePassageiro, nascPassageiro, cpfPassageiro);
+                                passageiros.add(passageiro);
                                 passagem.setPassageiro(passageiro);
                                 System.out.println("\n" + passagem.getPassagem() + "\n");
-                                //passageirosDoVoo.add(passagem.getPassagem());
-                                BancoDeDados.dadosEmArquivos("Passageiros do voo.txt", passageiro.getNome() +" - "+passagem.getPassagem());
                             }
                             v.setABordo(numPassageiro);
                             //}else{ 
@@ -179,29 +186,6 @@ public class App{
                         }
                     }      
                     break;
-                case 9:
-                    System.out.println("\n-- Eliminar dados --");
-                    System.out.println("Arquivos\n");
-                    System.out.println("Funcionarios");
-                    System.out.println("Aviões");
-                    System.out.println("Aviões disponíveis");
-                    System.out.println("Registro de voos");
-                    System.out.println("Passageiros");
-                    System.out.print("Digite qual o arquivo: ");
-                    String opArq = scanner.next();
-
-                    System.out.print("Deseja apagar todos os dados? [s/n]: ");
-                    String resp = scanner.next();
-                    switch(resp){
-                        case "s":
-                            BancoDeDados.eliminarTodoConteudoDeArquivo(opArq);
-                            break;
-                        case "n":
-                            
-                            break;
-                        default:
-                            break;
-                    }
                 case 10:
                     System.out.println("\nSaindo...");
                     loop = false;

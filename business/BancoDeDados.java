@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-//import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,26 +28,6 @@ public class BancoDeDados{
         }
     }
 
-    public static void eliminarDadosDeArquivo(String nomeArquivo, String dadosParaApagar){     // NÃO ESTÁ FUNCIONANDO
-        try(FileInputStream fis = new FileInputStream(nomeArquivo+".txt")){
-
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while((bytesRead = fis.read(buffer)) != -1){
-                String chunk = new String(buffer, 0, bytesRead);
-
-                // Remove os dados que você deseja apagar
-                chunk = chunk.replace(dadosParaApagar, "");
-            }
-
-            System.out.println("Dados removidos com sucesso do arquivo.");
-        
-        }catch(IOException e){
-            System.err.println("Erro ao apagar dados do arquivo: " + e.getMessage());
-        }
-    }
-
     public static void lerDadosDeArquivo(String nomeArquivo){
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(nomeArquivo)))) {
             String linha;
@@ -59,23 +38,4 @@ public class BancoDeDados{
             System.err.println("Erro ao ler os dados do arquivo: " + e.getMessage());
         }
     }
-
-    /*public static String compararDadosDeArquivo(String nomeArquivo, String entradaComparacao){        // NÃO ESTÁ FUNCIONANDO
-        try(BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))){
-            String linha;
-            boolean encontrado = false;
-
-            while((linha = reader.readLine()) != null){
-                System.out.println("Linha do arquivo " + linha);
-
-                if(linha.equals(entradaComparacao)){
-                    encontrado = true;
-                    
-                    return ;
-                }
-            }
-        }catch(IOException e){
-            System.err.println("Erro ao ler dados do arquivo " + e.getMessage());
-        }
-    }*/
 }
