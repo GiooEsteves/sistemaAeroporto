@@ -1,17 +1,18 @@
 package business;
 
+import java.util.ArrayList;
+
 import src.Passageiro;
 import src.Voo;
 
 public class Passagem{
     Voo voo;
     Passageiro passageiro;
-    
-    public Passagem(Voo v){
-        this.voo = v;
-    }
 
-    public void setPassageiro(Passageiro p){
+    ArrayList <Passagem> passagens = new ArrayList<Passagem>();
+
+    public void setPassagem(Voo v, Passageiro p){
+        voo = v;
         passageiro = p;
     }
 
@@ -26,6 +27,13 @@ public class Passagem{
     }
 
     public void getPassageirosDoVoo(){
+        for(Passagem p : passagens){
+            System.out.println(p.passageiro.getDadosPassageiro());
+        }
+    }
+
+    public void inserirPassagem(Passagem p){
         
+        passagens.add(p);
     }
 }
