@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 import business.exceptions.AviaoInvalidoException;
-import business.exceptions.DadosVaziosExceptions;
+import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class Aviao{
@@ -12,11 +12,11 @@ public class Aviao{
      
     ArrayList <Aviao> avioes = new ArrayList<Aviao>();
     
-    public void setAviao(String no, int ca, String ti) throws DadosVaziosExceptions{
+    public void setAviao(String no, int ca, String ti) throws DadosVaziosException{
         if(no == "" || ca == 0 || ti == ""){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados VAZIOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados VAZIOS.");
         }else if(no == null || ca == 0 || ti == null){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados NULOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados NULOS.");
         }else{
             nome = no;
             capacidade = ca;
@@ -49,12 +49,11 @@ public class Aviao{
     }
 
     public void listarAvioes() throws ObjetoNaoCadastradoException{
+        if(avioes.isEmpty()){
+            throw new ObjetoNaoCadastradoException();
+        }
         for(Aviao a : avioes){
-            if(a == null){
-                throw new ObjetoNaoCadastradoException();
-            }else{
-                System.out.println(a.getDadosAviao());
-            }
+            System.out.println(a.getDadosAviao()); 
         }
     }
 

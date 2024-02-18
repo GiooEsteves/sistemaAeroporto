@@ -2,7 +2,6 @@ package ui;
 
 // CRIAR UM METODO PARA ADICIONAR NO ARRAYLIST E PUXAR PELO CONSTRUTOR
 // ADICIONAR EXCLUIR E ATUALIZAR
-// COLOCAR TRATAMENTO DE ERRO NO CÓDIGO (USO DE EXCESSÃO)
 
 import java.util.Scanner;
 
@@ -34,10 +33,11 @@ public class App{
             System.out.println("6. Lista de voos");
             System.out.println("7. Lista de passageiros");
             System.out.println("8. Compra de passagem");
-            System.out.println("9. Atualizar");
-            System.out.println("10.");
-            System.out.println("11. Excluir"); 
-            System.out.println("12. Sair"); 
+            //System.out.println("9. Atualizar funcionario");
+            //System.out.println("10. Atualizar voo");
+            //System.out.println("11. Atualizar passageiro");
+            //System.out.println("12. Excluir funcionairo"); 
+            System.out.println("13. Sair"); 
             System.out.print("\nDigite a sua opção: ");
             
             int ent = scanner.nextInt();
@@ -96,10 +96,10 @@ public class App{
                     System.out.print("Digite o nome do avião escolhido: ");
                     String aviaoNome = scanner.next();
                     
-                    try{
+                    try{                                        
                         Aviao a = aviao.matchAviao(aviaoNome);
                         voo.inserirVoo(a, h, dtaPartida, cidOrigem, cidDestino, valorU);
-                    } catch (Exception e){
+                    }catch(Exception e){
                         System.out.println(e.getMessage());
                     }   
                     break;
@@ -107,7 +107,7 @@ public class App{
                     System.out.println("\n-- Lista de Funcionários --");
                     try{
                         funcionario.listarFuncionario();
-                    }catch(ObjetoNaoCadastradoException e){         // DANDO ERRO
+                    }catch(ObjetoNaoCadastradoException e){
                         System.err.println(e.getMessage());
                     }
                     break;
@@ -115,7 +115,7 @@ public class App{
                     System.out.println("\n-- Lista de aviões --");
                     try{
                         aviao.listarAvioes();
-                    }catch(ObjetoNaoCadastradoException e){        // DANDO ERRO
+                    }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -123,7 +123,7 @@ public class App{
                     System.out.println("\n-- Lista de voos --");
                     try{
                         voo.listarVoos();
-                    }catch(ObjetoNaoCadastradoException e){       // DANDO ERRO
+                    }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -131,7 +131,7 @@ public class App{
                     System.out.println("\n-- Lista de passageiros --");
                     try{
                         passageiro.listarPassageiros();
-                    }catch(ObjetoNaoCadastradoException e){       // DANDO ERRO
+                    }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
                     break;
@@ -146,15 +146,19 @@ public class App{
                     System.out.print("\nQuantos passageiros? ");
                     int numPassageiro = scanner.nextInt();
                     
-                    try{
+                    try{                                          
                         Voo v = voo.matchVoo(dta, nDestino, numPassageiro);
-                        passagem.getPagamento(numPassageiro, v.valorUnitario);
-                        passageiro.inserirPassageiros(v, numPassageiro);
+                        try{
+                            passagem.getPagamento(numPassageiro, v.valorUnitario);
+                            passageiro.inserirPassageiros(v, numPassageiro);
+                        }catch(Exception e){
+                            System.out.println(e.getMessage());
+                        }
                     }catch(Exception e){
                         System.out.println(e.getMessage());
                     } 
                     break;
-                case 12:
+                case 13:
                     System.out.println("\nSaindo...");
                     loop = false;
                     scanner.close();    

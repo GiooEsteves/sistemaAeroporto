@@ -2,7 +2,7 @@ package src;
 
 import java.util.ArrayList;
 
-import business.exceptions.DadosVaziosExceptions;
+import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
 import business.exceptions.VooInvalidoException;
 
@@ -17,11 +17,11 @@ public class Voo {
 
     ArrayList <Voo> voos = new ArrayList<Voo>();
 
-    public void setVoo(Aviao a, String h, String da, String o, String dest, double vUnit) throws DadosVaziosExceptions{
+    public void setVoo(Aviao a, String h, String da, String o, String dest, double vUnit) throws DadosVaziosException{
         if(a == null || h == "" || da == "" || o == "" || dest == "" || vUnit == 0){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados VAZIOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados VAZIOS.");
         }else if(a == null || h == null || da == null || o == null || dest == null || vUnit == 0){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados NULOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados NULOS.");
         }else{
             aviao = a;
             horario = h;
@@ -32,12 +32,8 @@ public class Voo {
         }
     }
 
-    public void setABordo(int qtd) throws DadosVaziosExceptions{
-        if(qtd == 0){
-            throw new DadosVaziosExceptions("\nERRO: Valor da quantidade de pessoas está vazio.");
-        }else{
-            aBordo = aBordo + qtd;
-        }
+    public void setABordo(int qtd){
+        aBordo = aBordo + qtd;
     }
 
     public int getABordo(){
@@ -65,19 +61,18 @@ public class Voo {
             Voo voo = new Voo();
             voo.setVoo(a, h, da, o, dest, vUnit); 
             voos.add(voo);
-            System.out.println("Voo criado");
+            System.out.println("\nVoo criado");
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
     }
 
     public void listarVoos() throws ObjetoNaoCadastradoException{
+        if(voos.isEmpty()){
+            throw new ObjetoNaoCadastradoException();
+        }
         for(Voo v : voos){
-            if(v == null){
-                throw new ObjetoNaoCadastradoException();
-            }else{
-                System.out.println(v.getPlaneInfo());
-            }
+            System.out.println(v.getPlaneInfo());    
         }
     }
 

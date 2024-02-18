@@ -2,7 +2,7 @@ package src.funcionarios;
 
 import java.util.ArrayList;
 
-import business.exceptions.DadosVaziosExceptions;
+import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class Funcionario{
@@ -12,11 +12,11 @@ public class Funcionario{
 
     ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();  
 
-    public void setFuncionario(String n, String c, Float s) throws DadosVaziosExceptions{
+    public void setFuncionario(String n, String c, Float s) throws DadosVaziosException{
         if(n == "" || c == "" || s == 0){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados VAZIOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados VAZIOS.");
         }else if(n == null || c == null || s == null){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados NULOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados NULOS.");
         }else{                
             nome = n;
             CPF = c;
@@ -51,12 +51,11 @@ public class Funcionario{
     }
 
     public void listarFuncionario() throws ObjetoNaoCadastradoException{
+        if(funcionarios.isEmpty()){
+            throw new ObjetoNaoCadastradoException();
+        }
         for(Funcionario f : funcionarios){
-            if(f == null){
-                throw new ObjetoNaoCadastradoException();
-            }else{
-                System.out.println(f.getDadosFuncionarios());
-            }
+            System.out.println(f.getDadosFuncionarios());    
         }
     }
 

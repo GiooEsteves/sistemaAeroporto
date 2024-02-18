@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import business.Passagem;
-import business.exceptions.DadosVaziosExceptions;
+import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class Passageiro {
@@ -15,11 +15,11 @@ public class Passageiro {
     ArrayList <Passageiro> passageiros = new ArrayList<Passageiro>();
     Scanner scanner = new Scanner(System.in);                 
 
-    public void setPassageiro(String n, String dtaNasc, String c) throws DadosVaziosExceptions{
+    public void setPassageiro(String n, String dtaNasc, String c) throws DadosVaziosException{
         if(n == "" || dtaNasc == "" || c == ""){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados VAZIOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados VAZIOS.");
         }else if(n == null || dtaNasc == null || c == null){
-            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados NULOS.");
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados NULOS.");
         }else{
             nome = n;
             dataNascimento = dtaNasc;
@@ -42,8 +42,12 @@ public class Passageiro {
         return "\nNome: " + nome + "\nCPF: " + CPF + "\nNascimento: " + dataNascimento;
     }
 
-    public void inserirPassageiros(Voo v, int numPassageiro){
-        try{                // TESTAR ESSE TRY
+    public void inserirPassageiros(Voo v, int numPassageiro) throws DadosVaziosException{
+        if(numPassageiro <= 0){
+            throw new DadosVaziosException("\nERRO: Número de passageiros inválido.");
+        }
+
+        try{
             for(int i = 0; i<numPassageiro; i++){
                 System.out.println("\nDados do passageiro ");
                 System.out.print("Digite o nome: ");
@@ -61,11 +65,7 @@ public class Passageiro {
                 Passagem p = passagem.inserirPassagem(v, passageiro); 
                 System.out.println("\n" + passagem.getPassagem(p));
 
-                try{        // TESTAR ESSE TRY
-                    v.setABordo(numPassageiro);
-                }catch(Exception e){
-                      System.out.println(e.getMessage());
-                }        
+                v.setABordo(numPassageiro);        
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -73,12 +73,11 @@ public class Passageiro {
     }
 
     public void listarPassageiros() throws ObjetoNaoCadastradoException{
+        if(passageiros.isEmpty()){
+            throw new ObjetoNaoCadastradoException();
+        }
         for(Passageiro p : passageiros){
-            if(p == null){
-                throw new ObjetoNaoCadastradoException();
-            }else{
-                System.out.println(p.getDadosPassageiro());
-            }
+            System.out.println(p.getDadosPassageiro());    
         }
     }
 }
