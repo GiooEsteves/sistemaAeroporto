@@ -16,24 +16,27 @@ public class Passagem{
         passageiro = p;
     }
 
-    public void getPagamento(int qtdPassageiro){
-        System.out.println("Valor da passagem: R$" + voo.valorUnitario);
-        System.out.println(qtdPassageiro + " assentos" + " * " + voo.valorUnitario);
-        System.out.println("Total a pagar R$" + (qtdPassageiro * voo.valorUnitario));
+    public void getPagamento(int qtdPassageiro, double valorUnitario){      // COLOCAR UM EXCEPTION
+        System.out.println("Valor da passagem: R$" + valorUnitario);
+        System.out.println(qtdPassageiro + " assento(s)" + " * " + valorUnitario);
+        System.out.println("Total a pagar R$" + (qtdPassageiro * valorUnitario));
     }
 
-    public String getPassagem(){
-        return "    PASSAGEM" + voo.getPlaneInfo() + "  " +passageiro.getDadosPassageiro()+"\n\n";
+    public String getPassagem(Passagem p){
+        return "    PASSAGEM" + p.voo.getPlaneInfo() + "  " + p.passageiro.getDadosPassageiro();
     }
 
-    public void getPassageirosDoVoo(){
+    public void getPassageirosDoVoo(){      // COLOCOAR EXCEPTION
         for(Passagem p : passagens){
             System.out.println(p.passageiro.getDadosPassageiro());
         }
     }
 
-    public void inserirPassagem(Passagem p){
-        
-        passagens.add(p);
+    public Passagem inserirPassagem(Voo v, Passageiro p){       // COLOCAR TRY CATCH
+        Passagem passagem = new Passagem();
+        passagem.setPassagem(v, p);
+        passagens.add(passagem);
+        System.out.println("Passagem de " + passagem.passageiro.getNome() +" comprada com sucesso.");
+        return passagem;
     }
 }

@@ -7,8 +7,7 @@ package ui;
 import java.util.Scanner;
 
 import business.Passagem;
-import business.exceptions.AviaoInvalidoException;
-import business.exceptions.VooInvalidoException;
+import business.exceptions.ObjetoNaoCadastradoException;
 import src.Aviao;
 import src.Passageiro;
 import src.Voo;
@@ -35,7 +34,8 @@ public class App{
             System.out.println("6. Lista de voos");
             System.out.println("7. Lista de passageiros");
             System.out.println("8. Compra de passagem");
-            System.out.println("10. Atualizar");
+            System.out.println("9. Atualizar");
+            System.out.println("10.");
             System.out.println("11. Excluir"); 
             System.out.println("12. Sair"); 
             System.out.print("\nDigite a sua opção: ");
@@ -99,25 +99,41 @@ public class App{
                     try{
                         Aviao a = aviao.matchAviao(aviaoNome);
                         voo.inserirVoo(a, h, dtaPartida, cidOrigem, cidDestino, valorU);
-                    } catch (AviaoInvalidoException e){
-                        e.printStackTrace();
+                    } catch (Exception e){
+                        System.out.println(e.getMessage());
                     }   
                     break;
                 case 4:
                     System.out.println("\n-- Lista de Funcionários --");
-                    funcionario.listarFuncionario();
-                break;
+                    try{
+                        funcionario.listarFuncionario();
+                    }catch(ObjetoNaoCadastradoException e){         // DANDO ERRO
+                        System.err.println(e.getMessage());
+                    }
+                    break;
                 case 5:
                     System.out.println("\n-- Lista de aviões --");
-                    aviao.listarAvioes();
+                    try{
+                        aviao.listarAvioes();
+                    }catch(ObjetoNaoCadastradoException e){        // DANDO ERRO
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 6:
                     System.out.println("\n-- Lista de voos --");
-                    voo.listarVoos();
+                    try{
+                        voo.listarVoos();
+                    }catch(ObjetoNaoCadastradoException e){       // DANDO ERRO
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 7:
                     System.out.println("\n-- Lista de passageiros --");
-                    passageiro.listarPassageiros();
+                    try{
+                        passageiro.listarPassageiros();
+                    }catch(ObjetoNaoCadastradoException e){       // DANDO ERRO
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 8:
                     System.out.println("\n-- Compra de passagem --");
@@ -129,16 +145,13 @@ public class App{
 
                     System.out.print("\nQuantos passageiros? ");
                     int numPassageiro = scanner.nextInt();
-
+                    
                     try{
                         Voo v = voo.matchVoo(dta, nDestino, numPassageiro);
-                        passagem.getPagamento(numPassageiro);
+                        passagem.getPagamento(numPassageiro, v.valorUnitario);
                         passageiro.inserirPassageiros(v, numPassageiro);
-
-                        System.out.println("\n" + passagem.getPassagem() + "\n");
-                        v.setABordo(numPassageiro);
-                    }catch(VooInvalidoException e){
-                        e.printStackTrace();
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
                     } 
                     break;
                 case 12:

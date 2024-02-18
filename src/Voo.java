@@ -2,6 +2,8 @@ package src;
 
 import java.util.ArrayList;
 
+import business.exceptions.DadosVaziosExceptions;
+import business.exceptions.ObjetoNaoCadastradoException;
 import business.exceptions.VooInvalidoException;
 
 public class Voo {
@@ -15,17 +17,27 @@ public class Voo {
 
     ArrayList <Voo> voos = new ArrayList<Voo>();
 
-    public void setVoo(Aviao a, String h, String da, String o, String dest, double vUnit){
-        aviao = a;
-        horario = h;
-        data = da;
-        origem = o;
-        destino = dest;
-        valorUnitario = vUnit;
+    public void setVoo(Aviao a, String h, String da, String o, String dest, double vUnit) throws DadosVaziosExceptions{
+        if(a == null || h == "" || da == "" || o == "" || dest == "" || vUnit == 0){
+            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados VAZIOS.");
+        }else if(a == null || h == null || da == null || o == null || dest == null || vUnit == 0){
+            throw new DadosVaziosExceptions("\nERRO: Está sendo passado dados NULOS.");
+        }else{
+            aviao = a;
+            horario = h;
+            data = da;
+            origem = o;
+            destino = dest;
+            valorUnitario = vUnit;
+        }
     }
 
-    public void setABordo(int qtd){
-        aBordo = aBordo + qtd;
+    public void setABordo(int qtd) throws DadosVaziosExceptions{
+        if(qtd == 0){
+            throw new DadosVaziosExceptions("\nERRO: Valor da quantidade de pessoas está vazio.");
+        }else{
+            aBordo = aBordo + qtd;
+        }
     }
 
     public int getABordo(){
@@ -45,39 +57,42 @@ public class Voo {
     }
 
     public String getPlaneInfo(){
-        return "\nAeroporto Guararapes" + "\nData: " + data + "\nHorário: " + horario + "\nOrigem: " +origem+ "   Destino: " +destino+"\n\n";
+        return "\nAeroporto Guararapes" + "\nData: " + data + "\nHorário: " + horario + "\nOrigem: " +origem+ "   Destino: " +destino+"\n";
     }
 
     public void inserirVoo(Aviao a, String h, String da, String o, String dest, double vUnit){
-        Voo voo = new Voo();
-        voo.setVoo(a, h, da, o, dest, vUnit); 
-        voos.add(voo);
-        System.out.println("Voo criado ");
+        try{
+            Voo voo = new Voo();
+            voo.setVoo(a, h, da, o, dest, vUnit); 
+            voos.add(voo);
+            System.out.println("Voo criado");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void listarVoos(){
+    public void listarVoos() throws ObjetoNaoCadastradoException{
         for(Voo v : voos){
-            System.out.println(v.getPlaneInfo());
+            if(v == null){
+                throw new ObjetoNaoCadastradoException();
+            }else{
+                System.out.println(v.getPlaneInfo());
+            }
         }
     }
 
     public Voo matchVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException{
-        try{
-            for(Voo v : voos){
-                if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() >= (v.getABordo() + numPassageiro)){
-                    System.out.println("\nVoo encontrado: ");
-                    System.out.println(v.getPlaneInfo());
-                    System.out.println("\nVoo selecionado!\n"); 
-                    return v;
-                }else if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() < (v.getABordo() + numPassageiro)){
-                    System.out.println("Voo lotado!");
-                    System.out.println("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assentos");
-                }
+        for(Voo v : voos){
+            if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() >= (v.getABordo() + numPassageiro)){
+                System.out.print("\nVoo encontrado: ");
+                System.out.print(v.getPlaneInfo());
+                System.out.println("Voo selecionado!\n"); 
+                return v;
+            }else if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() < (v.getABordo() + numPassageiro)){
+                System.out.println("Voo lotado!");
+                System.out.println("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assentos");
             }
-            throw new VooInvalidoException("Nenhum voo encontrado com os critérios fornecidos.");
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-            throw new VooInvalidoException("ERRO ao procurar voo: " + e.getMessage());
         }
+        throw new VooInvalidoException("\nERRO: Nenhum voo encontrado com os critérios fornecidos.");
     }
 }
