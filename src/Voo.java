@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
 import business.exceptions.VooInvalidoException;
+import business.exceptions.VooLotadoException;
 
 public class Voo {
     Aviao aviao;
@@ -76,16 +77,15 @@ public class Voo {
         }
     }
 
-    public Voo matchVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException{
+    public Voo matchVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException, VooLotadoException{
         for(Voo v : voos){
             if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() >= (v.getABordo() + numPassageiro)){
                 System.out.print("\nVoo encontrado: ");
                 System.out.print(v.getPlaneInfo());
-                System.out.println("Voo selecionado!\n"); 
+                System.out.println("\nVoo selecionado!\n"); 
                 return v;
             }else if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() < (v.getABordo() + numPassageiro)){
-                System.out.println("Voo lotado!");
-                System.out.println("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assentos");
+                throw new VooLotadoException("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assento(s)");
             }
         }
         throw new VooInvalidoException("\nERRO: Nenhum voo encontrado com os critérios fornecidos.");

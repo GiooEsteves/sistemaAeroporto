@@ -1,6 +1,5 @@
 package ui;
 
-// CRIAR UM METODO PARA ADICIONAR NO ARRAYLIST E PUXAR PELO CONSTRUTOR
 // ADICIONAR EXCLUIR E ATUALIZAR
 
 import java.util.Scanner;
@@ -37,6 +36,7 @@ public class App{
             //System.out.println("10. Atualizar voo");
             //System.out.println("11. Atualizar passageiro");
             //System.out.println("12. Excluir funcionairo"); 
+            //System.out.println("13. Excluir voo");
             System.out.println("13. Sair"); 
             System.out.print("\nDigite a sua opção: ");
             
