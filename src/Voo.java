@@ -1,6 +1,7 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
@@ -17,6 +18,7 @@ public class Voo {
     int aBordo;
 
     ArrayList <Voo> voos = new ArrayList<Voo>();
+    Scanner scanner = new Scanner(System.in); 
 
     public void setVoo(Aviao a, String h, String da, String o, String dest, double vUnit) throws DadosVaziosException{
         if(a == null || h == "" || da == "" || o == "" || dest == "" || vUnit == 0){
@@ -31,6 +33,29 @@ public class Voo {
             destino = dest;
             valorUnitario = vUnit;
         }
+    }
+
+    public void setAviao(Voo vooParaAtualizar, String novoNome){
+        Aviao aviao = new Aviao();
+        try{
+            Aviao a = aviao.matchAviao(novoNome);
+            vooParaAtualizar.aviao = a;
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+        
+    }
+
+    public void setHorario(Voo vooParaAtualizar, String h){
+        vooParaAtualizar.horario = h;
+    }
+
+    public void setData(Voo vooParaAtualizar, String d){
+        vooParaAtualizar.data = d;
+    }
+
+    public void setValor(Voo vooParaAtualizar, double v){
+        vooParaAtualizar.valorUnitario = v;
     }
 
     public void setABordo(int qtd){
@@ -54,7 +79,8 @@ public class Voo {
     }
 
     public String getPlaneInfo(){
-        return "\nAeroporto Guararapes" + "\nData: " + data + "\nHorário: " + horario + "\nOrigem: " +origem+ "   Destino: " +destino+"\n";
+        return "Aeroporto Guararapes" + "\nAvião: "+ aviao.getNome() +"\nData: " + data + "\nHorário: " + horario 
+                + "\nOrigem: " +origem+ "   Destino: " +destino+"\n";
     }
 
     public void inserirVoo(Aviao a, String h, String da, String o, String dest, double vUnit){
@@ -77,7 +103,7 @@ public class Voo {
         }
     }
 
-    public Voo matchVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException, VooLotadoException{
+    public Voo escolherVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException, VooLotadoException{
         for(Voo v : voos){
             if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() >= (v.getABordo() + numPassageiro)){
                 System.out.print("\nVoo encontrado: ");
@@ -88,6 +114,54 @@ public class Voo {
                 throw new VooLotadoException("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assento(s)");
             }
         }
-        throw new VooInvalidoException("\nERRO: Nenhum voo encontrado com os critérios fornecidos.");
+        throw new VooInvalidoException();
+    }
+
+    public Voo matchVoo(String dta, String nDestino) throws VooInvalidoException{
+        for(Voo v : voos){
+            if(v.getData().equals(dta) && v.getDestino().equals(nDestino)){
+                System.out.print("\nVoo encontrado: ");
+                System.out.print(v.getPlaneInfo());
+                System.out.println("\nVoo selecionado!"); 
+                return v;
+            }
+        }
+        throw new VooInvalidoException();
+    }
+
+    public void atualizarVoo(int esc, String dta, String nDestino){
+        try{
+            Voo vooParaAtualizar = matchVoo(dta, nDestino);
+            if(esc == 1){
+                System.out.print("Digite o nome do novo avião: ");
+                String novoNome = scanner.next(); 
+                setAviao(vooParaAtualizar, novoNome);
+            }else if(esc == 2){
+                System.out.print("Digite o novo horário: ");
+                String novoHorario = scanner.next();
+                setHorario(vooParaAtualizar, novoHorario);
+            }else if(esc == 3){
+                System.out.print("Digite a nova data: ");
+                String novaData = scanner.next();
+                setData(vooParaAtualizar, novaData);
+            }else if(esc == 4){
+                System.out.print("Digite o novo valor da passagem: ");
+                double novoValor = scanner.nextDouble();
+                setValor(vooParaAtualizar, novoValor);
+            }
+            System.out.println("\nVoo atualizado com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void excluirVoo(String data, String destino){
+        try{
+            Voo vooParaExcluir = matchVoo(data, destino);
+            voos.remove(vooParaExcluir);
+            System.out.println("\nVoo removido com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

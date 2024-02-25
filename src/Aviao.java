@@ -41,7 +41,6 @@ public class Aviao{
             Aviao aviao = new Aviao();
             aviao.setAviao(no, ca, ti);
             avioes.add(aviao);
-            //avioesDisponiveis.add(aviao);
             System.out.println("\nAvião cadastrado!");
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -63,6 +62,6 @@ public class Aviao{
                 return a;
             }
         }
-        throw new AviaoInvalidoException("\nERRO: Avião inválido, ou inexistente.");     
+        throw new AviaoInvalidoException();     
     }
 }

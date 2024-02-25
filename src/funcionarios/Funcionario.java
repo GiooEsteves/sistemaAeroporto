@@ -1,8 +1,10 @@
 package src.funcionarios;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import business.exceptions.DadosVaziosException;
+import business.exceptions.FuncionarioInvalidoException;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class Funcionario{
@@ -10,6 +12,7 @@ public class Funcionario{
     String CPF;
     Float salario;
 
+    Scanner scanner = new Scanner(System.in); 
     ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();  
 
     public void setFuncionario(String n, String c, Float s) throws DadosVaziosException{
@@ -24,10 +27,22 @@ public class Funcionario{
         }
     }
 
+    public String getCPF(){
+        return CPF;
+    }
+
     public String getDadosFuncionarios(){
         return "Nome: " + nome + "\nCPF: " + CPF + "\nSalário: " + salario + "\n";
     }
- 
+
+    public void setNome(Funcionario objFunc, String nome){
+        objFunc.nome = nome;
+    }
+
+    public void setSalario(Funcionario objFunc, float salario){
+        objFunc.salario = salario;
+    }
+
     public void inserirFuncionario(int func, String n, String c, Float s, String t){
         try{
             if(func == 1){
@@ -59,11 +74,40 @@ public class Funcionario{
         }
     }
 
-    public void excluirFuncionarios(){
-        
+    public Funcionario matchFuncionario(String funcCPF) throws FuncionarioInvalidoException{
+        for(Funcionario f : funcionarios){
+            if(f.getCPF().equals(funcCPF)){
+                return f;
+            }
+        }
+        throw new FuncionarioInvalidoException();     
     }
 
-    public void atualizarFuncionario(){
-        
+    public void atualizarFuncionario(String cpfPassado, int esc){
+        try{
+            Funcionario funcionarioParaAtualizar = matchFuncionario(cpfPassado);
+            if(esc == 1){
+                System.out.print("Digite o novo nome: ");
+                String novoNome = scanner.next(); 
+                setNome(funcionarioParaAtualizar, novoNome);
+            }else if(esc == 2){
+                System.out.print("Digite o novo salário: ");
+                Float novoSalario = scanner.nextFloat();
+                setSalario(funcionarioParaAtualizar, novoSalario);
+            }
+            System.out.println("\nFuncionário atualizado com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void excluirFuncionarios(String cpfPassado){
+        try{
+            Funcionario funcionarioParaExcluir = matchFuncionario(cpfPassado);
+            funcionarios.remove(funcionarioParaExcluir);
+            System.out.println("\nFuncionário removido com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
     }
 }

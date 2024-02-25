@@ -6,6 +6,7 @@ import java.util.Scanner;
 import business.Passagem;
 import business.exceptions.DadosVaziosException;
 import business.exceptions.ObjetoNaoCadastradoException;
+import business.exceptions.PassageiroInvalidoException;
 
 public class Passageiro {
     String nome;
@@ -27,6 +28,18 @@ public class Passageiro {
         }
     }
 
+    public void setPassageiroAtualizado(Passageiro p, String n, String dtaNasc, String c) throws DadosVaziosException{
+        if(n == "" || dtaNasc == "" || c == ""){
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados VAZIOS.");
+        }else if(n == null || dtaNasc == null || c == null){
+            throw new DadosVaziosException("\nERRO: Está sendo passado dados NULOS.");
+        }else{
+            p.nome = n;
+            p.dataNascimento = dtaNasc;
+            p.CPF = c;
+        }
+    }
+
     public String getNome(){
         return nome;
     }
@@ -39,7 +52,7 @@ public class Passageiro {
         return dataNascimento;
     } 
     public String getDadosPassageiro(){
-        return "\nNome: " + nome + "\nCPF: " + CPF + "\nNascimento: " + dataNascimento;
+        return "Nome: " + nome + "\nCPF: " + CPF + "\nNascimento: " + dataNascimento;
     }
 
     public void inserirPassageiros(Voo v, int numPassageiro) throws DadosVaziosException{
@@ -78,6 +91,32 @@ public class Passageiro {
         }
         for(Passageiro p : passageiros){
             System.out.println(p.getDadosPassageiro());    
+        }
+    }
+
+    public Passageiro matchPassageiro(String cpf) throws PassageiroInvalidoException{
+        for(Passageiro p : passageiros){
+            if(cpf == p.getCPF()){
+                return p;
+            }
+        }
+        throw new PassageiroInvalidoException();
+    }
+
+    public void atualizarPassageiro(String cpfPassado){
+         try{
+            Passageiro passageiroParaAtualizar = matchPassageiro(cpfPassado);
+            
+            System.out.print("Digite o novo nome: ");
+            String novoNome = scanner.next(); 
+            System.out.print("Digite o novo cpf: ");
+            String novoCPF = scanner.next();
+            System.out.print("Digite a nova data de nascimento: ");
+            String novaDtaNasc = scanner.next();
+            setPassageiroAtualizado(passageiroParaAtualizar, novoNome, novaDtaNasc, novoCPF);
+            System.out.println("\nPassageiro atualizado com sucesso!");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
         }
     }
 }

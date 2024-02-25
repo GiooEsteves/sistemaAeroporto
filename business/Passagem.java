@@ -44,9 +44,10 @@ public class Passagem{
             passagens.add(passagem);
             System.out.println("\nPassagem de "+ passagem.passageiro.getNome() +" comprada com sucesso.");
             return passagem;
-        }catch(Exception e){
+        }catch(DadosVaziosException e){
             System.out.println(e.getMessage());
             return null;
+            
         }
     }
 }
