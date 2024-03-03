@@ -1,4 +1,4 @@
-package src.funcionarios;
+package funcionario;
 
 public class Piloto extends Funcionario{
     private String tipoPiloto;

@@ -2,22 +2,27 @@ package ui;
 
 import java.util.Scanner;
 
-import business.Passagem;
 import business.exceptions.ObjetoNaoCadastradoException;
-import src.Aviao;
-import src.Passageiro;
-import src.Voo;
-import src.funcionarios.Funcionario;
+import business.passagem.Passagem;
+import business.passagem.RepositorioPassagem;
+import aviao.Aviao;
+import aviao.RepositorioAviao;
+import passageiro.Passageiro;
+import passageiro.RepositorioPassageiro;
+import voo.RepositorioVoo;
+import voo.Voo;
+import funcionario.RepositorioFuncionario;
 
 public class App{
     public static void main(String[] args){
         Scanner scanner = new Scanner(System.in);                 
 
-        Funcionario funcionario = new Funcionario();
-        Aviao aviao = new Aviao();
-        Voo voo = new Voo();
+        RepositorioFuncionario repFuncionario = new RepositorioFuncionario();
+        RepositorioAviao repAviao = new RepositorioAviao();
+        RepositorioVoo repVoo = new RepositorioVoo();
+        RepositorioPassageiro repPassageiro = new RepositorioPassageiro();
         Passagem passagem = new Passagem();
-        Passageiro passageiro = new Passageiro();      
+        RepositorioPassagem repPassagem = new RepositorioPassagem();
 
         boolean loop = true;
         while(loop){
@@ -56,15 +61,16 @@ public class App{
                     System.out.print("Digite o CPF do funcionário: ");
                     String cpfFunc = scanner.next();
                     System.out.print("Digite o salário do funcionário: ");
-                    Float salarioFunc = scanner.nextFloat();
+                    double salarioFunc = scanner.nextDouble();
                     
                     if(tipoDeFuncCadastro == 1){
                         System.out.print("Qual o tipo do piloto? ");
                         String tipoPiloto = scanner.next();
-                        funcionario.inserirFuncionario(tipoDeFuncCadastro, nomeFunc, cpfFunc, salarioFunc, tipoPiloto);
+                        repFuncionario.inserirFuncionario(tipoDeFuncCadastro, nomeFunc, cpfFunc, salarioFunc, tipoPiloto);
                     }else{
-                        funcionario.inserirFuncionario(tipoDeFuncCadastro, nomeFunc, cpfFunc, salarioFunc, null);
+                        repFuncionario.inserirFuncionario(tipoDeFuncCadastro, nomeFunc, cpfFunc, salarioFunc, null);
                     }
+                    System.out.println("\nFuncionário cadastrado!");
                     break;
                 case 2:
                     System.out.println("\n-- Cadastro de aviões --"); 
@@ -75,7 +81,8 @@ public class App{
                     System.out.print("Tipo de avião: ");
                     String tipoAviao = scanner.next();
 
-                    aviao.inserirAviao(nomeAviao, capacAviao, tipoAviao);
+                    repAviao.inserirAviao(nomeAviao, capacAviao, tipoAviao);
+                    System.out.println("\nAvião cadastrado!");
                     break;
                 case 3:
                     System.out.println("\n-- Cadastro de voo --");
@@ -95,16 +102,18 @@ public class App{
                     String aviaoNome = scanner.next();
                     
                     try{                                        
-                        Aviao a = aviao.matchAviao(aviaoNome);
-                        voo.inserirVoo(a, horaVoo, dtaPartida, cidOrigem, cidDestino, valorAssento);
+                        Aviao a = repAviao.matchAviao(aviaoNome);
+                        repVoo.inserirVoo(a, horaVoo, dtaPartida, cidOrigem, cidDestino, valorAssento);         
+                        System.out.println("\nVoo criado");
                     }catch(Exception e){
                         System.out.println(e.getMessage());
-                    }   
+                    }  
+                     
                     break;
                 case 4:
                     System.out.println("\n-- Lista de Funcionários --");
                     try{
-                        funcionario.listarFuncionario();
+                        repFuncionario.listarFuncionario();
                     }catch(ObjetoNaoCadastradoException e){
                         System.err.println(e.getMessage());
                     }
@@ -112,7 +121,7 @@ public class App{
                 case 5:
                     System.out.println("\n-- Lista de aviões --");
                     try{
-                        aviao.listarAvioes();
+                        repAviao.listarAvioes();
                     }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
@@ -120,7 +129,7 @@ public class App{
                 case 6:
                     System.out.println("\n-- Lista de voos --");
                     try{
-                        voo.listarVoos();
+                        repVoo.listarVoos();
                     }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
@@ -128,7 +137,7 @@ public class App{
                 case 7:
                     System.out.println("\n-- Lista de passageiros --");
                     try{
-                        passageiro.listarPassageiros();
+                        repPassageiro.listarPassageiros();
                     }catch(ObjetoNaoCadastradoException e){
                         System.out.println(e.getMessage());
                     }
@@ -143,12 +152,27 @@ public class App{
 
                     System.out.print("\nQuantos passageiros? ");
                     int numPassageiro = scanner.nextInt();
-                    
                     try{                                          
-                        Voo v = voo.escolherVoo(dtaPassagemCompra, nomeDestinoCompra, numPassageiro);
+                        Voo v = repVoo.escolherVoo(dtaPassagemCompra, nomeDestinoCompra, numPassageiro);
+                        System.out.println("\nVoo encontrado: ");
+                        System.out.print(v.getPlaneInfo());
+                        System.out.println("\nVoo selecionado!");
                         try{
-                            passagem.getPagamento(numPassageiro, v.valorUnitario);
-                            passageiro.inserirPassageiros(v, numPassageiro);
+                            for(int i = 0; i<numPassageiro; i++){
+                                System.out.println("\nDados do passageiro ");
+                                System.out.print("Digite o nome: ");
+                                String nomePassageiro = scanner.next();
+                                System.out.print("Digite a data de nascimento (dd/mm/aaaa): ");
+                                String nascPassageiro = scanner.next();
+                                System.out.print("Digite o CPF: ");
+                                String cpfPassageiro = scanner.next();
+   
+                                Passageiro passageiroDoVoo = repPassageiro.inserirPassageiros(numPassageiro, nomePassageiro, nascPassageiro, cpfPassageiro);
+                                Passagem passagemComprada = repPassagem.inserirPassagem(v, passageiroDoVoo); 
+                                System.out.println("\nPassagem de "+ passageiroDoVoo.getNome() +" comprada com sucesso.");  
+                                System.out.println("\n" + passagem.getPassagem(passagemComprada));
+                            }
+                            v.setABordo(numPassageiro); 
                         }catch(Exception e){
                             System.out.println(e.getMessage());
                         }
@@ -162,8 +186,18 @@ public class App{
                     String cpfFuncionarioAtualizar = scanner.next();
                     System.out.println("1. Nome\n2. Salário");
                     System.out.print("\nO que deseja atualizar? ");
-                    int escAtualizarFuncionario = scanner.nextInt();      
-                    funcionario.atualizarFuncionario(cpfFuncionarioAtualizar, escAtualizarFuncionario);
+                    int escAtualizarFuncionario = scanner.nextInt();     
+
+                    if(escAtualizarFuncionario == 1){
+                        System.out.print("Digite o novo nome: ");
+                        String novoNome = scanner.next();
+                        repFuncionario.atualizarFuncionario(cpfFuncionarioAtualizar, escAtualizarFuncionario, novoNome, 4728.43);
+                    }else if(escAtualizarFuncionario == 2){
+                        System.out.print("Digite o novo salário: ");
+                        double novoSalario = scanner.nextDouble();
+                        repFuncionario.atualizarFuncionario(cpfFuncionarioAtualizar, escAtualizarFuncionario, "qualquer", novoSalario);
+                    } 
+                    System.out.println("\nFuncionário atualizado com sucesso!");
                     break;
                 case 10:
                     System.out.println("\n--  Atualizar voo --");
@@ -174,19 +208,45 @@ public class App{
                     System.out.println("1. Avião\n2. Horário\n3. Data\n4. Valor da passagem");
                     System.out.print("\nO que deseja atualizar? ");
                     int escAtualizarVoo = scanner.nextInt();
-                    voo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar);
+
+                    if(escAtualizarVoo == 1){
+                        System.out.print("Digite o nome do novo avião: ");
+                        String novoNome = scanner.next();
+                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, novoNome, "qualquer", "qualquer", 467.3);
+                    }else if(escAtualizarVoo == 2){
+                        System.out.print("Digite o novo horário: ");
+                        String novoHorario = scanner.next();
+                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", novoHorario, "qualquer", 7482.42);
+                    }else if(escAtualizarVoo == 3){
+                        System.out.print("Digite a nova data: ");
+                        String novaData = scanner.next();
+                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", novaData, 7329.2);
+                    }else if(escAtualizarVoo == 4){
+                        System.out.print("Digite o novo valor da passagem: ");
+                        double novoValor = scanner.nextDouble();
+                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", "qualquer", novoValor);
+                    }    
+                    System.out.println("\nVoo atualizado com sucesso!");
                     break;
                 case 11:
                     System.out.println("Atualizar passageiro");
                     System.out.print("Qual o CPF do passageiro que se deseja atualizar? ");
                     String cpfPassageiroAtualizar = scanner.next();   
-                    passageiro.atualizarPassageiro(cpfPassageiroAtualizar);
+                    System.out.print("\nDigite o novo nome: ");
+                    String novoNome = scanner.next();
+                    System.out.print("\nDigite o novo cpf: ");
+                    String novoCPF = scanner.next();
+                    System.out.print("\nDigite a nova data de nascimento: ");
+                    String novaDtaNasc = scanner.next();
+                    repPassageiro.atualizarPassageiro(cpfPassageiroAtualizar, novoNome, novaDtaNasc, novoCPF);
+                    System.out.println("\nPassageiro atualizado com sucesso!");
                     break;
                 case 12:
                     System.out.println("\n-- Excluir funcionário --");
                     System.out.print("Qual o CPF do funcionário que se deseja excluir? ");
                     String cpfExcluir = scanner.next();
-                    funcionario.excluirFuncionarios(cpfExcluir);
+                    repFuncionario.excluirFuncionarios(cpfExcluir);
+                    System.out.println("\nFuncionário removido com sucesso!");
                     break;
                 case 13: 
                     System.out.println("\n-- Excluir voo --");
@@ -194,7 +254,8 @@ public class App{
                     String dataDoVooExcluir = scanner.next();
                     System.out.print("Digite o nome do destino do voo: ");
                     String nomeDestinoExcluir = scanner.next();
-                    voo.excluirVoo(dataDoVooExcluir, nomeDestinoExcluir);
+                    repVoo.excluirVoo(dataDoVooExcluir, nomeDestinoExcluir);
+                    System.out.println("\nVoo removido com sucesso!");
                     break;
                 case 14:
                     System.out.println("\nSaindo...");
