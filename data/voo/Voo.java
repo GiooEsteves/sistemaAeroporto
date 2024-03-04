@@ -28,10 +28,9 @@ public class Voo {
         }
     }
 
-    public void setAviaoDoVoo(Voo vooParaAtualizar, String novoNome){
-        RepositorioAviao repAviao = new RepositorioAviao();
+    public void setAviaoDoVoo(RepositorioAviao repAviao, Voo vooParaAtualizar, String novoNome){
         try{
-            Aviao a = repAviao.matchAviao(novoNome); // NÃO ESTÁ FUNCIONANDO
+            Aviao a = repAviao.matchAviao(novoNome);
             vooParaAtualizar.aviao = a;
         }catch(Exception e){
             System.out.println(e.getMessage());

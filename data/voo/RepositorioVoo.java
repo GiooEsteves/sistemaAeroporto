@@ -5,6 +5,7 @@ import business.exceptions.ObjetoNaoCadastradoException;
 import business.exceptions.VooInvalidoException;
 import business.exceptions.VooLotadoException;
 import aviao.Aviao;
+import aviao.RepositorioAviao;
 
 public class RepositorioVoo{
     ArrayList <Voo> voos = new ArrayList<Voo>();    
@@ -50,11 +51,11 @@ public class RepositorioVoo{
         throw new VooInvalidoException();
     }
 
-    public void atualizarVoo(int esc, String dta, String nDestino, String novoNome, String novoHorario, String novaData, double novoValor){
+    public void atualizarVoo(RepositorioAviao repAviao, int esc, String dta, String nDestino, String novoNome, String novoHorario, String novaData, double novoValor){
         try{
             Voo vooParaAtualizar = matchVoo(dta, nDestino);
             if(esc == 1){
-                voo.setAviaoDoVoo(vooParaAtualizar, novoNome);  // NÃO ESTÁ FUNCIONANDO, ESTOURA ERRO DE AVIÃO INVÁLIDO
+                voo.setAviaoDoVoo(repAviao, vooParaAtualizar, novoNome);
             }else if(esc == 2){
                 voo.setHorario(vooParaAtualizar, novoHorario);
             }else if(esc == 3){

@@ -2,10 +2,13 @@ package ui;
 
 import java.util.Scanner;
 
-import business.exceptions.ObjetoNaoCadastradoException;
+import business.cadastro.CadastroDeVoo;
+import business.lista.ListarAviao;
+import business.lista.ListarFuncionario;
+import business.lista.ListarVoo;
+import business.lista.ListarPassageiro;
 import business.passagem.Passagem;
 import business.passagem.RepositorioPassagem;
-import aviao.Aviao;
 import aviao.RepositorioAviao;
 import passageiro.Passageiro;
 import passageiro.RepositorioPassageiro;
@@ -101,46 +104,24 @@ public class App{
                     System.out.print("Digite o nome do avião escolhido: ");
                     String aviaoNome = scanner.next();
                     
-                    try{                                        
-                        Aviao a = repAviao.matchAviao(aviaoNome);
-                        repVoo.inserirVoo(a, horaVoo, dtaPartida, cidOrigem, cidDestino, valorAssento);         
-                        System.out.println("\nVoo criado");
-                    }catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }  
-                     
+                    CadastroDeVoo.criarVoo(repAviao, repVoo, aviaoNome, horaVoo, dtaPartida, cidOrigem, cidDestino, valorAssento);
+                    System.out.println("\nVoo criado"); 
                     break;
                 case 4:
                     System.out.println("\n-- Lista de Funcionários --");
-                    try{
-                        repFuncionario.listarFuncionario();
-                    }catch(ObjetoNaoCadastradoException e){
-                        System.err.println(e.getMessage());
-                    }
+                    ListarFuncionario.listarFuncionario(repFuncionario);
                     break;
                 case 5:
                     System.out.println("\n-- Lista de aviões --");
-                    try{
-                        repAviao.listarAvioes();
-                    }catch(ObjetoNaoCadastradoException e){
-                        System.out.println(e.getMessage());
-                    }
+                    ListarAviao.listarAviao(repAviao);
                     break;
                 case 6:
                     System.out.println("\n-- Lista de voos --");
-                    try{
-                        repVoo.listarVoos();
-                    }catch(ObjetoNaoCadastradoException e){
-                        System.out.println(e.getMessage());
-                    }
+                    ListarVoo.listarVoo(repVoo);
                     break;
                 case 7:
                     System.out.println("\n-- Lista de passageiros --");
-                    try{
-                        repPassageiro.listarPassageiros();
-                    }catch(ObjetoNaoCadastradoException e){
-                        System.out.println(e.getMessage());
-                    }
+                    ListarPassageiro.listarPassageiro(repPassageiro);
                     break;
                 case 8:
                     System.out.println("\n-- Compra de passagem --");
@@ -152,6 +133,8 @@ public class App{
 
                     System.out.print("\nQuantos passageiros? ");
                     int numPassageiro = scanner.nextInt();
+                    
+                    // ADICIONAR CAMADA DE NEGÓCIO
                     try{                                          
                         Voo v = repVoo.escolherVoo(dtaPassagemCompra, nomeDestinoCompra, numPassageiro);
                         System.out.println("\nVoo encontrado: ");
@@ -188,6 +171,7 @@ public class App{
                     System.out.print("\nO que deseja atualizar? ");
                     int escAtualizarFuncionario = scanner.nextInt();     
 
+                    // ADICIONAR CAMADA DE NEGÓCIO
                     if(escAtualizarFuncionario == 1){
                         System.out.print("Digite o novo nome: ");
                         String novoNome = scanner.next();
@@ -209,23 +193,25 @@ public class App{
                     System.out.print("\nO que deseja atualizar? ");
                     int escAtualizarVoo = scanner.nextInt();
 
+                    // ADICIONAR CAMADA DE NEGÓCIO
                     if(escAtualizarVoo == 1){
                         System.out.print("Digite o nome do novo avião: ");
                         String novoNome = scanner.next();
-                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, novoNome, "qualquer", "qualquer", 467.3);
+                        repVoo.atualizarVoo(repAviao, escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, novoNome, "qualquer", "qualquer", 467.3);
                     }else if(escAtualizarVoo == 2){
                         System.out.print("Digite o novo horário: ");
                         String novoHorario = scanner.next();
-                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", novoHorario, "qualquer", 7482.42);
+                        repVoo.atualizarVoo(repAviao, escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", novoHorario, "qualquer", 7482.42);
                     }else if(escAtualizarVoo == 3){
                         System.out.print("Digite a nova data: ");
                         String novaData = scanner.next();
-                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", novaData, 7329.2);
+                        repVoo.atualizarVoo(repAviao, escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", novaData, 7329.2);
                     }else if(escAtualizarVoo == 4){
                         System.out.print("Digite o novo valor da passagem: ");
                         double novoValor = scanner.nextDouble();
-                        repVoo.atualizarVoo(escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", "qualquer", novoValor);
+                        repVoo.atualizarVoo(repAviao, escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, "qualquer", "qualquer", "qualquer", novoValor);
                     }    
+
                     System.out.println("\nVoo atualizado com sucesso!");
                     break;
                 case 11:
