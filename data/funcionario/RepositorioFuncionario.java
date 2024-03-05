@@ -9,12 +9,11 @@ public class RepositorioFuncionario {
     ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();  
     Funcionario funcionario = new Funcionario();
 
-    public void inserirFuncionario(int func, String n, String c, double s, String t){
+    public void inserirFuncionario(int func, String n, String c, double s){
         try{
             if(func == 1){
                 Piloto piloto = new Piloto();
                 piloto.setFuncionario(n, c, s);
-                piloto.setTipoPiloto(t);
                 funcionarios.add(piloto);
             }else if(func == 2){
                 AgenteDeBordo ag = new AgenteDeBordo();

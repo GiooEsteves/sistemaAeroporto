@@ -11,10 +11,10 @@ public class RepositorioVoo{
     ArrayList <Voo> voos = new ArrayList<Voo>();    
     Voo voo = new Voo();
     
-    public void inserirVoo(Aviao a, String h, String da, String o, String dest, double vUnit){
+    public void inserirVoo(Aviao a, String n, String h, String da, String o, String dest, double vUnit){
         try{
             Voo voo = new Voo();
-            voo.setVoo(a, h, da, o, dest, vUnit); 
+            voo.setVoo(a, n, h, da, o, dest, vUnit); 
             voos.add(voo);
         }catch(Exception e){
             System.err.println(e.getMessage());
@@ -44,7 +44,6 @@ public class RepositorioVoo{
     public Voo matchVoo(String dta, String nDestino) throws VooInvalidoException{
         for(Voo v : voos){
             if(v.getData().equals(dta) && v.getDestino().equals(nDestino)){
-                System.out.print(v.getPlaneInfo());
                 return v;
             }
         }

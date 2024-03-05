@@ -1,4 +1,4 @@
-package business.passagem;
+package passagem;
 
 import business.exceptions.DadosVaziosException;
 import passageiro.Passageiro;
@@ -18,6 +18,6 @@ public class Passagem{
     }
 
     public String getPassagem(Passagem p){
-        return "    PASSAGEM\n" + p.voo.getPlaneInfo() + "  " + p.passageiro.getDadosPassageiro();
+        return "    PASSAGEM\n" + p.voo.getPlaneInfo() + p.passageiro.getDadosPassageiro();
     }
 }

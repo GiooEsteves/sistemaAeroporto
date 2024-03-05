@@ -1,12 +1,12 @@
 package business.lista;
 
 import business.exceptions.ObjetoNaoCadastradoException;
-import passageiro.RepositorioPassageiro;
+import passagem.RepositorioPassagem;
 
 public class ListarPassageiro{
-    public static void listarPassageiro(RepositorioPassageiro repPassageiro){
+    public static void listarPassageiro(RepositorioPassagem repPassagem){
         try{
-            repPassageiro.listarPassageiros();
+            repPassagem.getPassageirosDoVoo();
         }catch(ObjetoNaoCadastradoException e){
             System.err.println(e.getMessage());
         }

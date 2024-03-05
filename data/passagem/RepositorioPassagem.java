@@ -1,17 +1,20 @@
-package business.passagem;
+package passagem;
 
 import java.util.ArrayList;
-
 import business.exceptions.DadosVaziosException;
+import business.exceptions.ObjetoNaoCadastradoException;
 import passageiro.Passageiro;
 import voo.Voo;
 
 public class RepositorioPassagem{
     ArrayList <Passagem> passagens = new ArrayList<Passagem>();
 
-    public void getPassageirosDoVoo(){          // COLOCAR EXCEPTION SE FOR USAR
+    public void getPassageirosDoVoo() throws ObjetoNaoCadastradoException{ // LISTA PASSAGEIRO POR VOO
         for(Passagem p : passagens){
-            System.out.println(p.passageiro.getDadosPassageiro());
+            if(p.passageiro == null){
+                throw new ObjetoNaoCadastradoException();
+            }
+            System.out.println("Voo: " + p.voo.getNome() + "\n" +p.passageiro.getDadosPassageiro());
         }
     }
 
