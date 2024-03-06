@@ -1,7 +1,6 @@
 package aviao;
 
 import java.util.ArrayList;
-import business.exceptions.AviaoInvalidoException;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class RepositorioAviao{
@@ -26,12 +25,7 @@ public class RepositorioAviao{
         }
     }
 
-    public Aviao matchAviao(String aviaoNome) throws AviaoInvalidoException{
-        for(Aviao a : avioes){
-            if(a.getNome().equals(aviaoNome)){
-                return a;
-            }
-        }
-        throw new AviaoInvalidoException();     
+    public ArrayList<Aviao> getArrayListAvioes(){
+        return avioes;
     }
 }

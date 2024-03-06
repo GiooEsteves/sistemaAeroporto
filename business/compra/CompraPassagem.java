@@ -1,5 +1,8 @@
 package business.compra;
 
+import java.util.ArrayList;
+
+import business.busca.Busca;
 import passageiro.Passageiro;
 import passageiro.RepositorioPassageiro;
 import passagem.Passagem;
@@ -9,8 +12,10 @@ import voo.Voo;
 
 public class CompraPassagem{
     public static Voo escolherVoo(RepositorioVoo repVoo, String dtaPassagemCompra, String nomeDestinoCompra){
+        ArrayList <Voo> voos = new ArrayList<Voo>();
+        voos = repVoo.getArrayListVoo();           
         try{
-            Voo v = repVoo.escolherVoo(dtaPassagemCompra, nomeDestinoCompra, 1);
+            Voo v = Busca.escolherVoo(voos, dtaPassagemCompra, nomeDestinoCompra);
             return v;
         }catch(Exception e){
             System.err.println(e.getMessage());

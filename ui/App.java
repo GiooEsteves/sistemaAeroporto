@@ -117,9 +117,8 @@ public class App{
                     String dtaPassagemCompra = scanner.next();
                     System.out.print("Digite o nome da cidade de destino: ");
                     String nomeDestinoCompra = scanner.next();
-                                           
+       
                     Voo v = CompraPassagem.escolherVoo(repVoo, dtaPassagemCompra, nomeDestinoCompra);
-                    System.out.print("\n" + v.getPlaneInfo());
                     System.out.println("\nVoo selecionado!");
                 
                     System.out.println("\nDados do passageiro ");
@@ -157,10 +156,8 @@ public class App{
                     break;
                 case 10:
                     System.out.println("\n--  Atualizar voo --");
-                    System.out.print("Qual a data do voo que deseja atualizar? ");
-                    String dataVooAtualizar = scanner.next();
-                    System.out.print("Qual o nome do destino do voo que deseja atualizar? ");
-                    String nomeDestinoVooAtualizar = scanner.next();
+                    System.out.print("Qual o nome do voo que deseja atualizar? ");
+                    String nomeVooAtualizar = scanner.next();
                     System.out.println("1. Avião\n2. Horário\n3. Data\n4. Valor da passagem");
                     System.out.print("\nO que deseja atualizar? ");
                     int escAtualizarVoo = scanner.nextInt();   
@@ -183,7 +180,7 @@ public class App{
                         novoValorVoo = scanner.nextDouble();
                     }
 
-                    AtualizarVoo.atualizarVoo(repVoo, repAviao, escAtualizarVoo, dataVooAtualizar, nomeDestinoVooAtualizar, novoNomeVoo, novoHorarioVoo, novaDataVoo, novoValorVoo);
+                    AtualizarVoo.atualizarVoo(repVoo, repAviao, escAtualizarVoo, nomeVooAtualizar, novoNomeVoo, novoHorarioVoo, novaDataVoo, novoValorVoo);
                     System.out.println("\nVoo atualizado com sucesso!");
                     break;
                 case 11:
@@ -210,11 +207,9 @@ public class App{
                     break;
                 case 13: 
                     System.out.println("\n-- Excluir voo --");
-                    System.out.print("Digite a data do voo: ");
-                    String dataDoVooExcluir = scanner.next();
-                    System.out.print("Digite o nome do destino do voo: ");
-                    String nomeDestinoExcluir = scanner.next();
-                    ExcluirVoo.excluirVoo(repVoo, dataDoVooExcluir, nomeDestinoExcluir);
+                    System.out.print("Digite o nome do voo: ");
+                    String nomeDoVooExcluir = scanner.next();
+                    ExcluirVoo.excluirVoo(repVoo, nomeDoVooExcluir);
                     System.out.println("\nVoo removido com sucesso!");
                     break;
                 case 14:

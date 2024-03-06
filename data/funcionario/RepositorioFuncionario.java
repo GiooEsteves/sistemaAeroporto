@@ -1,29 +1,38 @@
 package funcionario;
 
 import java.util.ArrayList;
-
-import business.exceptions.FuncionarioInvalidoException;
+import business.busca.Busca;
 import business.exceptions.ObjetoNaoCadastradoException;
 
 public class RepositorioFuncionario {
     ArrayList <Funcionario> funcionarios = new ArrayList<Funcionario>();  
     Funcionario funcionario = new Funcionario();
 
-    public void inserirFuncionario(int func, String n, String c, double s){
+    public void inserirFuncionarioPiloto(String n, String c, double s){
         try{
-            if(func == 1){
-                Piloto piloto = new Piloto();
-                piloto.setFuncionario(n, c, s);
-                funcionarios.add(piloto);
-            }else if(func == 2){
-                AgenteDeBordo ag = new AgenteDeBordo();
-                ag.setFuncionario(n, c, s);
-                funcionarios.add(ag);
-            }else if(func == 3){
-                Vendedor vendedor = new Vendedor();
-                vendedor.setFuncionario(n, c, s);
-                funcionarios.add(vendedor);
-            }
+            Piloto piloto = new Piloto();
+            piloto.setFuncionario(n, c, s);
+            funcionarios.add(piloto);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void inserirFuncionarioAg(String n, String c, double s){
+        try{
+            AgenteDeBordo ag = new AgenteDeBordo();
+            ag.setFuncionario(n, c, s);
+            funcionarios.add(ag);
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void inserirFuncionarioVendedor(String n, String c, double s){
+        try{
+            Vendedor vendedor = new Vendedor();
+            vendedor.setFuncionario(n, c, s);
+            funcionarios.add(vendedor);
         }catch(Exception e){
             System.err.println(e.getMessage());
         }
@@ -38,34 +47,25 @@ public class RepositorioFuncionario {
         }
     }
 
-    public Funcionario matchFuncionario(String funcCPF) throws FuncionarioInvalidoException{
-        for(Funcionario f : funcionarios){
-            if(f.getCPF().equals(funcCPF)){
-                return f;
-            }
-        }
-        throw new FuncionarioInvalidoException();     
+    public void atualizarNomeFuncionario(Funcionario funcionarioParaAtualizar, String novoNome, double novoSalario){
+        funcionario.setNome(funcionarioParaAtualizar, novoNome); 
     }
 
-    public void atualizarFuncionario(String cpfPassado, int esc, String novoNome, double novoSalario){
-        try{
-            Funcionario funcionarioParaAtualizar = matchFuncionario(cpfPassado);
-            if(esc == 1){
-                funcionario.setNome(funcionarioParaAtualizar, novoNome);
-            }else if(esc == 2){     
-                funcionario.setSalario(funcionarioParaAtualizar, novoSalario);
-            }
-        }catch(Exception e){
-            System.err.println(e.getMessage());
-        }
+    public void atualizarSalarioFuncionario(Funcionario funcionarioParaAtualizar, String novoNome, double novoSalario){
+        funcionario.setSalario(funcionarioParaAtualizar, novoSalario);    
+        
     }
 
     public void excluirFuncionarios(String cpfPassado){
         try{
-            Funcionario funcionarioParaExcluir = matchFuncionario(cpfPassado);
+            Funcionario funcionarioParaExcluir = Busca.matchFuncionario(funcionarios, cpfPassado);
             funcionarios.remove(funcionarioParaExcluir);
         }catch(Exception e){
             System.err.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Funcionario> getArrayListFuncionario(){
+        return funcionarios;
     }
 }

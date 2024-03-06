@@ -1,11 +1,9 @@
 package voo;
 
 import java.util.ArrayList;
+import business.busca.Busca;
 import business.exceptions.ObjetoNaoCadastradoException;
-import business.exceptions.VooInvalidoException;
-import business.exceptions.VooLotadoException;
 import aviao.Aviao;
-import aviao.RepositorioAviao;
 
 public class RepositorioVoo{
     ArrayList <Voo> voos = new ArrayList<Voo>();    
@@ -30,49 +28,32 @@ public class RepositorioVoo{
         }
     }
 
-    public Voo escolherVoo(String dta, String nDestino, int numPassageiro) throws VooInvalidoException, VooLotadoException{
-        for(Voo v : voos){
-            if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() >= (v.getABordo() + numPassageiro)){
-                return v;
-            }else if(v.getData().equals(dta) && v.getDestino().equals(nDestino) && v.getCapacidade() < (v.getABordo() + numPassageiro)){
-                throw new VooLotadoException("Há apenas " + (v.getCapacidade() - v.getABordo()) + " assento(s)");
-            }
-        }
-        throw new VooInvalidoException();
+    public void atualizarAviaoVoo(ArrayList<Aviao> avioes, Voo vooParaAtualizar, String novoNome, String novoHorario, String novaData, double novoValor){
+        voo.setAviaoDoVoo(avioes, vooParaAtualizar, novoNome);
     }
 
-    public Voo matchVoo(String dta, String nDestino) throws VooInvalidoException{
-        for(Voo v : voos){
-            if(v.getData().equals(dta) && v.getDestino().equals(nDestino)){
-                return v;
-            }
-        }
-        throw new VooInvalidoException();
+    public void atualizarHoraVoo(Voo vooParaAtualizar, String novoNome, String novoHorario, String novaData, double novoValor){
+        voo.setHorario(vooParaAtualizar, novoHorario);        
     }
 
-    public void atualizarVoo(RepositorioAviao repAviao, int esc, String dta, String nDestino, String novoNome, String novoHorario, String novaData, double novoValor){
+    public void atualizarDataVoo(Voo vooParaAtualizar, String novoNome, String novoHorario, String novaData, double novoValor){
+        voo.setData(vooParaAtualizar, novaData);        
+    }
+
+    public void atualizarValorVoo(Voo vooParaAtualizar, String novoNome, String novoHorario, String novaData, double novoValor){
+        voo.setValor(vooParaAtualizar, novoValor);            
+    }
+
+    public void excluirVoo(String nomeVoo){
         try{
-            Voo vooParaAtualizar = matchVoo(dta, nDestino);
-            if(esc == 1){
-                voo.setAviaoDoVoo(repAviao, vooParaAtualizar, novoNome);
-            }else if(esc == 2){
-                voo.setHorario(vooParaAtualizar, novoHorario);
-            }else if(esc == 3){
-                voo.setData(vooParaAtualizar, novaData);
-            }else if(esc == 4){
-                voo.setValor(vooParaAtualizar, novoValor);
-            }
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void excluirVoo(String data, String destino){
-        try{
-            Voo vooParaExcluir = matchVoo(data, destino);
+            Voo vooParaExcluir = Busca.matchVoo(voos, nomeVoo);
             voos.remove(vooParaExcluir);
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public ArrayList<Voo> getArrayListVoo(){
+        return voos;
     }
 }

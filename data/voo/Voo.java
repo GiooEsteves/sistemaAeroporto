@@ -1,7 +1,8 @@
 package voo;
 
+import java.util.ArrayList;
 import aviao.Aviao;
-import aviao.RepositorioAviao;
+import business.busca.Busca;
 import business.exceptions.DadosVaziosException;
 
 public class Voo {
@@ -30,9 +31,9 @@ public class Voo {
         }
     }
 
-    public void setAviaoDoVoo(RepositorioAviao repAviao, Voo vooParaAtualizar, String novoNome){
+    public void setAviaoDoVoo(ArrayList<Aviao> avioes, Voo vooParaAtualizar, String novoNome){
         try{
-            Aviao a = repAviao.matchAviao(novoNome);
+            Aviao a = Busca.matchAviao(avioes, novoNome);
             vooParaAtualizar.aviao = a;
         }catch(Exception e){
             System.out.println(e.getMessage());

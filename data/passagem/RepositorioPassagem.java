@@ -9,15 +9,6 @@ import voo.Voo;
 public class RepositorioPassagem{
     ArrayList <Passagem> passagens = new ArrayList<Passagem>();
 
-    public void getPassageirosDoVoo() throws ObjetoNaoCadastradoException{ // LISTA PASSAGEIRO POR VOO
-        for(Passagem p : passagens){
-            if(p.passageiro == null){
-                throw new ObjetoNaoCadastradoException();
-            }
-            System.out.println("Voo: " + p.voo.getNome() + "\n" +p.passageiro.getDadosPassageiro());
-        }
-    }
-
     public Passagem inserirPassagem(Voo v, Passageiro p){
         try{
             Passagem passagem = new Passagem();
@@ -27,6 +18,15 @@ public class RepositorioPassagem{
         }catch(DadosVaziosException e){
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public void listarPassageirosPorPassagem() throws ObjetoNaoCadastradoException{ // LISTA PASSAGEIRO POR VOO
+        if(passagens.isEmpty()){
+            throw new ObjetoNaoCadastradoException();
+        }
+        for(Passagem p : passagens){
+            System.out.println("Voo " + p.voo.getNome() + "\n" +p.passageiro.getDadosPassageiro());
         }
     }
 }

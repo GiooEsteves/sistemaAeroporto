@@ -1,8 +1,8 @@
 package passageiro;
 
 import java.util.ArrayList;
+import business.busca.Busca;
 import business.exceptions.ObjetoNaoCadastradoException;
-import business.exceptions.PassageiroInvalidoException;
 
 public class RepositorioPassageiro{
     ArrayList <Passageiro> passageiros = new ArrayList<Passageiro>();
@@ -29,18 +29,9 @@ public class RepositorioPassageiro{
         }
     }
 
-    public Passageiro matchPassageiro(String cpf) throws PassageiroInvalidoException{
-        for(Passageiro p : passageiros){
-            if(p.getCPF().equals(cpf)){
-                return p;
-            }
-        }
-        throw new PassageiroInvalidoException();
-    }
-
     public void atualizarPassageiro(String cpfPassado, String novoNome, String novaDtaNasc, String novoCPF){
          try{
-            Passageiro passageiroParaAtualizar = matchPassageiro(cpfPassado);
+            Passageiro passageiroParaAtualizar = Busca.matchPassageiro(passageiros, novoCPF);
             passageiro.setPassageiroAtualizado(passageiroParaAtualizar, novoNome, novaDtaNasc, novoCPF);
         }catch(Exception e){
             System.err.println(e.getMessage());
