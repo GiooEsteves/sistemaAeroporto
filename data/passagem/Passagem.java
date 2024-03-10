@@ -17,7 +17,10 @@ public class Passagem{
         }
     }
 
-    public String getPassagem(Passagem p){
+    public String getPassagem(Passagem p) throws DadosVaziosException{
+        if(p.equals(null)){
+            throw new DadosVaziosException("\nERRO: A passagem está SEM DADOS.");
+        }
         return "    PASSAGEM\n" + p.voo.getPlaneInfo() + p.passageiro.getDadosPassageiro();
     }
 }

@@ -20,7 +20,6 @@ public class App{
         RepositorioAviao repAviao = new RepositorioAviao();
         RepositorioVoo repVoo = new RepositorioVoo();
         RepositorioPassageiro repPassageiro = new RepositorioPassageiro();
-        Passagem passagem = new Passagem();
         RepositorioPassagem repPassagem = new RepositorioPassagem();
 
         boolean loop = true;
@@ -131,7 +130,7 @@ public class App{
 
                     Passagem passagemComprada = CompraPassagem.compraDePassagem(repPassageiro, repPassagem, nomePassageiro, nascPassageiro, cpfPassageiro, v); 
                     System.out.println("\nPassagem comprada com sucesso!");  
-                    System.out.println("\n" + passagem.getPassagem(passagemComprada));
+                    repPassagem.getPassagem(passagemComprada);
                     break;
                 case 9:
                     System.out.println("\n--  Atualizar funcionário --");

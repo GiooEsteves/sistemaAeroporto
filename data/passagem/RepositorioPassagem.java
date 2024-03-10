@@ -8,10 +8,9 @@ import voo.Voo;
 
 public class RepositorioPassagem{
     ArrayList <Passagem> passagens = new ArrayList<Passagem>();
-
+    Passagem passagem = new Passagem();
     public Passagem inserirPassagem(Voo v, Passageiro p){
         try{
-            Passagem passagem = new Passagem();
             passagem.setPassagem(v, p);
             passagens.add(passagem);
             return passagem;
@@ -27,6 +26,14 @@ public class RepositorioPassagem{
         }
         for(Passagem p : passagens){
             System.out.println("Voo " + p.voo.getNome() + "\n" +p.passageiro.getDadosPassageiro());
+        }
+    }
+
+    public void getPassagem(Passagem passagemComprada){
+        try{
+            System.out.println("\n" + passagem.getPassagem(passagemComprada));
+        }catch(Exception e){
+            System.err.println(e.getMessage());
         }
     }
 }
